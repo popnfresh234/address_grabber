@@ -16,6 +16,8 @@ const getCustomers = (cursor, customers) => {
     .then((result) => {
       if (result.cursor) return getCustomers(result.cursor, customers.concat(result.customers));
       return customers;
+    }).catch((err) => {
+      console.log(err);
     });
 };
 
@@ -43,5 +45,7 @@ const getLatLng = customers => customers
 getCustomers(null, []).then((customers) => {
   const latLngArr = getLatLng(customers);
   console.log(latLngArr);
+}).catch((err) => {
+  console.log(err);
 });
 
