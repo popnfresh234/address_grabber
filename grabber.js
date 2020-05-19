@@ -7,8 +7,7 @@ const path = require('path');
 
 const geocoder = new Geocodio(process.env.GEOCODIO_API_KEY);
 const DEV_MODE = false;
-const PATH = './data/lat-lng-arr.json';
-
+const { FILE_PATH } = process.env;
 const getCustomers = (cursor, customers) => {
   let url = 'https://connect.squareup.com/v2/customers';
   if (cursor) url = `${url}?cursor=${cursor}`;
@@ -31,7 +30,7 @@ const getCustomers = (cursor, customers) => {
 
 const sortCountry = (countryCode, postal) => {
   // Sort by country code first
-  const lookup = { CA: 'Canada', US: 'United States' }; path;
+  const lookup = { CA: 'Canada', US: 'United States' };
   let country = lookup[countryCode] ? lookup[countryCode] : countryCode;
 
   // double check via postal code
@@ -56,7 +55,7 @@ const getGeocodes = (addresses, devMode) => {
   geocoder.geocode(addrList)
     .then((response) => {
       const latLngArr = response.results.map(geo => geo.response.results[0].location);
-      fs.writeFileSync(PATH, JSON.stringify(latLngArr));
+      fs.writeFileSync(FILE_PATH, JSON.stringify(latLngArr));
     });
 };
 
