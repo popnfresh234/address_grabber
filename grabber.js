@@ -22,7 +22,7 @@ const getCustomers = (cursor, customers) => {
   }).then(response => response.json())
     .then((result) => {
       if (result.cursor) return getCustomers(result.cursor, customers.concat(result.customers));
-      return customers;
+      return customers.concat(result.customers);
     }).catch((err) => {
       console.log(err);
     });
@@ -55,6 +55,7 @@ const getGeocodes = (addresses, devMode) => {
   geocoder.geocode(addrList)
     .then((response) => {
       const latLngArr = response.results.map(geo => geo.response.results[0].location);
+      console.log(latLngArr.length);
       fs.writeFileSync(FILE_PATH, JSON.stringify(latLngArr));
     });
 };
